@@ -8,12 +8,10 @@ import lombok.Value;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static java.util.stream.Collectors.*;
 
 @RequiredArgsConstructor
 public class DbPostSupplier implements PostSupplier {
@@ -27,7 +25,7 @@ public class DbPostSupplier implements PostSupplier {
     private static final String GET_TAGS = """
             SELECT object_id, name
             FROM wp_terms t JOIN wp_term_relationships r
-            ON t.term_id = r.term_taxonomy_id;
+            ON t.term_id = r.term_taxonomy_id
             """;
     private final Connection connection;
 
@@ -57,13 +55,10 @@ public class DbPostSupplier implements PostSupplier {
     }
 
     private void fillTags(Map<Long, Post> postMap) {
-        List<PostIdTagName> tags = getTags();
-        tags.forEach(tag -> {
-            var post = postMap.get(tag.postId);
-            if (post != null) {
-                post.getTags().add(tag.tagName);
-            }
-        });
+        Map<Long, List<String>> tags = getTags()
+                .stream()
+                .collect(groupingBy(PostIdTagName::getPostId, mapping(PostIdTagName::getTagName, toList())));
+        postMap.forEach((id, post) -> post.setTags(tags.getOrDefault(id, Collections.emptyList())));
     }
 
     private List<PostIdTagName> getTags() {
@@ -71,7 +66,6 @@ public class DbPostSupplier implements PostSupplier {
 
         try (Statement statement = connection.createStatement()) {
             var rs = statement.executeQuery(GET_TAGS);
-
             while (rs.next()) {
                 long id = rs.getLong("object_id");
                 String name = rs.getString("name");
