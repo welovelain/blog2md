@@ -20,9 +20,6 @@ public class MainPostProcessor {
         for (var post: posts) {
             MdFile mdFile = new MdFile(null, post.getHtmlContent());
             MdFile mdFileProcessed = mdFileProcessorChain.process(mdFile, post);
-
-            System.out.println(mdFileProcessed);
-            System.out.println("------");
         }
 
     }

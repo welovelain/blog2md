@@ -1,11 +1,13 @@
-package dev.welovelain.wp2md.application;
+package dev.welovelain.wp2md;
 
 import dev.welovelain.wp2md.domain.MainPostProcessor;
 import dev.welovelain.wp2md.domain.PostSupplier;
-import dev.welovelain.wp2md.domain.processor.DateToFileNameMdFileProcessor;
 import dev.welovelain.wp2md.domain.processor.AbstractMdFileProcessor;
+import dev.welovelain.wp2md.domain.processor.DateToFileNameMdFileProcessor;
 import dev.welovelain.wp2md.domain.processor.FrontMatterMdFileProcessor;
+import dev.welovelain.wp2md.domain.processor.HtmlToMarkdownMdFileProcessor;
 import dev.welovelain.wp2md.infrastructure.DbPostSupplier;
+import io.github.furstenheim.CopyDown;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
@@ -33,12 +35,14 @@ public class Application {
 
     private static AbstractMdFileProcessor getMdFileProcessorsChain() {
         // example: 20210203213437.md
-        var processor1 = new DateToFileNameMdFileProcessor(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        var processor2 = new FrontMatterMdFileProcessor();
+        var p = new DateToFileNameMdFileProcessor(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        var p2 = new HtmlToMarkdownMdFileProcessor(new CopyDown());
+        var p3 = new FrontMatterMdFileProcessor();
 
-        processor1.next = processor2;
+        p.next = p2;
+        p.next.next = p3;
 
-        return processor1;
+        return p;
     }
 
     private static MainPostProcessor mainPostProcessor(
