@@ -2,6 +2,7 @@ package dev.welovelain.wp2md.domain.processor;
 
 import dev.welovelain.wp2md.domain.MdFile;
 import dev.welovelain.wp2md.domain.Post;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -18,12 +19,14 @@ tags:
 - Shocking
 ---
  */
+@Slf4j
 public class FrontMatterMdFileProcessor extends AbstractMdFileProcessor {
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
     @Override
     protected MdFile processHere(MdFile file, Post post) {
+        log.debug("Activated for post {}", post.getId());
         String title = post.getTitle();
         String date = dateTimeFormatter.format(post.getPostDate());
         String updated = dateTimeFormatter.format(post.getModifiedDate());

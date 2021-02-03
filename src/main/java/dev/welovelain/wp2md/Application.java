@@ -35,7 +35,7 @@ public class Application {
 
     private static AbstractMdFileProcessor getMdFileProcessorsChain() {
         // example: 20210203213437.md
-        var p = new DateToFileNameMdFileProcessor(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        var p = new DateToFileNameMdFileProcessor(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"), ".md");
         var p2 = new HtmlToMarkdownMdFileProcessor(new CopyDown());
         var p3 = new FrontMatterMdFileProcessor();
 
