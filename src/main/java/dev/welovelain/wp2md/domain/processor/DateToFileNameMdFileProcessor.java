@@ -16,6 +16,6 @@ public class DateToFileNameMdFileProcessor extends MdFileProcessor {
     @Override
     protected MdFile processHere(MdFile file, Post post) {
         String name = dateTimeFormatter.format(post.getPostDate()) + EXTENSION;
-        return new MdFile(name, file.fileName);
+        return new MdFile(name, post.getHtmlContent());
     }
 }
