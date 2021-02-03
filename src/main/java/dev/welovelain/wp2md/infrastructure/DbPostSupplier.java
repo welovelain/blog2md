@@ -4,6 +4,7 @@ import dev.welovelain.wp2md.domain.Post;
 import dev.welovelain.wp2md.domain.PostSupplier;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -14,6 +15,7 @@ import java.util.*;
 import static java.util.stream.Collectors.*;
 
 @RequiredArgsConstructor
+@Slf4j
 public class DbPostSupplier implements PostSupplier {
 
     private static final String SKIP_TAG = "Uncategorized";
@@ -49,7 +51,7 @@ public class DbPostSupplier implements PostSupplier {
             fillTags(postMap);
             return new ArrayList<>(postMap.values());
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
             throw new RuntimeException("Failed to get posts: " + e.getMessage());
         }
     }
@@ -78,7 +80,7 @@ public class DbPostSupplier implements PostSupplier {
 
             return list;
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
             throw new RuntimeException("Failed to get tags: " + e.getMessage());
         }
     }

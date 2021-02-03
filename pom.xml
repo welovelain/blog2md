@@ -25,16 +25,16 @@
             <artifactId>mariadb-java-client</artifactId>
             <version>2.7.2</version>
         </dependency>
-
-
         <dependency>
             <groupId>io.github.furstenheim</groupId>
             <artifactId>copy_down</artifactId>
             <version>1.0</version>
         </dependency>
-
-
-
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
