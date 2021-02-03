@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import java.time.format.DateTimeFormatter;
 
 @RequiredArgsConstructor
-public class DateToFileNameMdFileProcessor extends MdFileProcessor {
+public class DateToFileNameMdFileProcessor extends AbstractMdFileProcessor {
 
     private static final String EXTENSION = ".md";
 

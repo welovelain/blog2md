@@ -21,7 +21,7 @@ public class DbPostSupplier implements PostSupplier {
     private static final String SKIP_TAG = "Uncategorized";
 
     private static final String GET_POSTS_SQL = """
-            SELECT ID, post_date, post_title, post_content FROM wp_posts WHERE post_status = 'publish'
+            SELECT ID, post_date, post_title, post_modified, post_content FROM wp_posts WHERE post_status = 'publish'
             """;
 
     private static final String GET_TAGS = """
@@ -41,10 +41,11 @@ public class DbPostSupplier implements PostSupplier {
             while (rs.next()) {
                 long id = rs.getLong("ID");
                 LocalDateTime postDate = rs.getTimestamp("post_date").toLocalDateTime();
+                LocalDateTime modifiedDate = rs.getTimestamp("post_modified").toLocalDateTime();
                 String title = rs.getString("post_title");
                 String postContent = rs.getString("post_content");
 
-                Post post = new Post(id, title, postDate, postContent, new ArrayList<>());
+                Post post = new Post(id, title, postDate, modifiedDate, postContent, new ArrayList<>());
                 postMap.put(id, post);
             }
 

@@ -1,6 +1,6 @@
 package dev.welovelain.wp2md.domain;
 
-import dev.welovelain.wp2md.domain.processor.MdFileProcessor;
+import dev.welovelain.wp2md.domain.processor.AbstractMdFileProcessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,7 +11,7 @@ import java.util.List;
 public class MainPostProcessor {
 
     private final PostSupplier postSupplier;
-    private final MdFileProcessor mdFileProcessorChain;
+    private final AbstractMdFileProcessor mdFileProcessorChain;
 
     public void run() {
         List<Post> posts = postSupplier.get();
@@ -20,6 +20,9 @@ public class MainPostProcessor {
         for (var post: posts) {
             MdFile mdFile = new MdFile(null, post.getHtmlContent());
             MdFile mdFileProcessed = mdFileProcessorChain.process(mdFile, post);
+
+            System.out.println(mdFileProcessed);
+            System.out.println("------");
         }
 
     }

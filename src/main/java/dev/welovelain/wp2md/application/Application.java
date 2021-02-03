@@ -3,7 +3,8 @@ package dev.welovelain.wp2md.application;
 import dev.welovelain.wp2md.domain.MainPostProcessor;
 import dev.welovelain.wp2md.domain.PostSupplier;
 import dev.welovelain.wp2md.domain.processor.DateToFileNameMdFileProcessor;
-import dev.welovelain.wp2md.domain.processor.MdFileProcessor;
+import dev.welovelain.wp2md.domain.processor.AbstractMdFileProcessor;
+import dev.welovelain.wp2md.domain.processor.FrontMatterMdFileProcessor;
 import dev.welovelain.wp2md.infrastructure.DbPostSupplier;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,15 +31,19 @@ public class Application {
         return new DbPostSupplier(connection);
     }
 
-    private static MdFileProcessor getMdFileProcessorsChain() {
+    private static AbstractMdFileProcessor getMdFileProcessorsChain() {
         // example: 20210203213437.md
         var processor1 = new DateToFileNameMdFileProcessor(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        var processor2 = new FrontMatterMdFileProcessor();
+
+        processor1.next = processor2;
+
         return processor1;
     }
 
     private static MainPostProcessor mainPostProcessor(
             PostSupplier supplier,
-            MdFileProcessor mdFileProcessorChain
+            AbstractMdFileProcessor mdFileProcessorChain
     ) {
         return new MainPostProcessor(
                 supplier,

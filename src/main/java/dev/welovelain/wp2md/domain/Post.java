@@ -15,6 +15,7 @@ public class Post {
     private long id;
     private String title;
     private LocalDateTime postDate;
+    private LocalDateTime modifiedDate;
     private String htmlContent;
     private List<String> tags;
 }

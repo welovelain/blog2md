@@ -2,12 +2,10 @@ package dev.welovelain.wp2md.domain.processor;
 
 import dev.welovelain.wp2md.domain.MdFile;
 import dev.welovelain.wp2md.domain.Post;
-import lombok.Setter;
 
-public abstract class MdFileProcessor {
+public abstract class AbstractMdFileProcessor {
 
-    @Setter
-    private MdFileProcessor next;
+    public AbstractMdFileProcessor next;
 
     public final MdFile process(MdFile file, Post post) {
         MdFile processed = processHere(file, post);
