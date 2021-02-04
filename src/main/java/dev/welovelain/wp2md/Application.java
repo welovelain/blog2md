@@ -5,26 +5,25 @@ import dev.welovelain.wp2md.domain.PostSupplier;
 import dev.welovelain.wp2md.domain.pipe.*;
 import dev.welovelain.wp2md.infrastructure.DbPostSupplier;
 import io.github.furstenheim.CopyDown;
-import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.time.format.DateTimeFormatter;
 
-@Slf4j
 public class Application {
 
     private static final String WORDPRESS_JDBC_URL = System.getenv("WORDPRESS_JDBC_URL");
     private static final String MD_DIRECTORY = System.getenv("MD_DIRECTORY");
     private static final String IMAGE404_PATH = System.getenv("IMAGE404_PATH");
+    private static final Duration IMAGE_DOWNLOAD_TIMEOUT = Duration.ofSeconds(5);
 
     public static void main(String[] args) throws Exception {
-        BlogProcessor blogProcessor = mainPostProcessor(
+        new BlogProcessor(
                 dbPostSupplier(),
                 getMdFileProcessorsChain()
-        );
-        blogProcessor.run();
+        ).run();
     }
 
     private static PostSupplier dbPostSupplier() throws SQLException {
@@ -37,7 +36,7 @@ public class Application {
         var p2 = new HtmlToMarkdownMdFilePipe(new CopyDown());
         var p3 = new FrontMatterMdFilePipe();
         var p4 = new ClearUrlImageLinksMdFilePipe();
-        var p5 = new ImageMdFilePipe(MD_DIRECTORY, true, IMAGE404_PATH);
+        var p5 = new ImageMdFilePipe(MD_DIRECTORY, IMAGE404_PATH, IMAGE_DOWNLOAD_TIMEOUT);
         var p6 = new DiskWritingMdFilePipe(MD_DIRECTORY);
 
         p1.next = p2;
@@ -49,13 +48,4 @@ public class Application {
         return p1;
     }
 
-    private static BlogProcessor mainPostProcessor(
-            PostSupplier supplier,
-            AbstractMdFilePipe mdFileProcessorChain
-    ) {
-        return new BlogProcessor(
-                supplier,
-                mdFileProcessorChain
-        );
-    }
 }

@@ -5,13 +5,14 @@ import dev.welovelain.wp2md.domain.Post;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.channels.Channels;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,10 +34,9 @@ public class ImageMdFilePipe extends AbstractMdFilePipe {
     private static final String EXTENSION = "jpg";
 
     private final AtomicInteger imageCounter = new AtomicInteger();
-
     private final String blogDirectory;
-    private final boolean overwriteFiles;
     private final String relativeErrorImagePath;
+    private final Duration downloadTimeout;
 
     @Override
     protected MdFile processHere(MdFile file, Post post) {
@@ -70,19 +70,40 @@ public class ImageMdFilePipe extends AbstractMdFilePipe {
 
     private void downloadFile(String url, String filename) throws IOException {
         String path = blogDirectory + "/" + IMAGE_DIR + "/" + filename;
-        log.debug("Downloading image: {}, filename: {}", url, filename);
+        log.info("Downloading image: {}, filename: {}", url, filename);
 
-        try (InputStream in = new URL(url).openStream()) {
-            if (overwriteFiles) {
-                Files.copy(in, Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
-                return;
-            }
+        URL urly = new URL(url);
+        URL temp = null;
 
-            try {
-                Files.copy(in, Paths.get(path));
-            } catch (FileAlreadyExistsException e) {
-                log.warn("Didn't download image: " + e.getMessage());
-            }
+        while (urly != temp) {
+            temp = checkForRedirect(urly);
+            urly = temp;
+            temp = checkForRedirect(urly);
         }
+
+        var conn = urly.openConnection();
+        conn.setReadTimeout((int)(downloadTimeout.get(ChronoUnit.SECONDS) * 1000));
+
+        try (var is = conn.getInputStream();
+             var readable = Channels.newChannel(is);
+             var os = new FileOutputStream(path);
+             var fc = os.getChannel()) {
+            fc.transferFrom(readable, 0, Long.MAX_VALUE);
+        }
+
+    }
+
+    // todo recursive check
+    private URL checkForRedirect(URL url) throws IOException {
+        HttpURLConnection huc = (HttpURLConnection)url.openConnection();
+        huc.setConnectTimeout((int)(downloadTimeout.get(ChronoUnit.SECONDS) * 1000));
+
+        int statusCode = huc.getResponseCode(); //get response code
+        if (statusCode == HttpURLConnection.HTTP_MOVED_TEMP
+                || statusCode == HttpURLConnection.HTTP_MOVED_PERM){ // if file is moved, then pick new URL
+            return new URL(huc.getHeaderField("Location"));
+        }
+
+        return url;
     }
 }

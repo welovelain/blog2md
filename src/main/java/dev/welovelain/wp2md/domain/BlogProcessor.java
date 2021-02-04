@@ -19,6 +19,8 @@ public class BlogProcessor {
         posts.sort((o1, o2) -> o1.getModifiedDate().compareTo(o2.modifiedDate));
 
         int counter = 0;
+        // Could use parallelStream for faster processing,
+        // but I want file metadata to be in creation order correlating to last update
         for (var post : posts) {
             log.info("Processing {} of {}", ++counter, posts.size());
             MdFile mdFile = new MdFile(null, post.htmlContent);
