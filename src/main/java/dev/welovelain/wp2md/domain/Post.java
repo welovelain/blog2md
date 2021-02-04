@@ -11,10 +11,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Post {
-    private long id;
-    private String title;
-    private LocalDateTime postDate;
-    private LocalDateTime modifiedDate;
-    private String htmlContent;
-    private List<String> tags;
+    public long id;
+    public String title;
+    public LocalDateTime postDate;
+    public LocalDateTime modifiedDate;
+    public String htmlContent;
+    public List<String> tags;
 }

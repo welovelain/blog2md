@@ -11,14 +11,13 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 public class DateToFileNameMdFileProcessor extends AbstractMdFileProcessor {
 
-
     private final DateTimeFormatter dateTimeFormatter;
     private final String extension;
 
     @Override
     protected MdFile processHere(MdFile file, Post post) {
-        log.debug("Activated for post {}", post.getId());
-        String name = dateTimeFormatter.format(post.getPostDate()) + extension;
-        return new MdFile(name, file.content);
+//        log.debug("Activated for post {}", post.id);
+        String name = dateTimeFormatter.format(post.postDate) + extension;
+        return file.withFileName(name);
     }
 }

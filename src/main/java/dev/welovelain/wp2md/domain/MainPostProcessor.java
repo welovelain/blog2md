@@ -18,8 +18,11 @@ public class MainPostProcessor {
         log.info("Received {} posts", posts.size());
 
         for (var post: posts) {
-            MdFile mdFile = new MdFile(null, post.getHtmlContent());
+            MdFile mdFile = new MdFile(null, post.htmlContent);
             MdFile mdFileProcessed = mdFileProcessorChain.process(mdFile, post);
+
+//            System.out.println(mdFileProcessed);
+//            System.out.println("---");
         }
 
     }

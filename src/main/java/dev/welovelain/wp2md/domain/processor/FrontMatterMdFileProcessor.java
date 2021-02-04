@@ -26,11 +26,11 @@ public class FrontMatterMdFileProcessor extends AbstractMdFileProcessor {
 
     @Override
     protected MdFile processHere(MdFile file, Post post) {
-        log.debug("Activated for post {}", post.getId());
-        String title = post.getTitle();
-        String date = dateTimeFormatter.format(post.getPostDate());
-        String updated = dateTimeFormatter.format(post.getModifiedDate());
-        String tags = tags(post.getTags());
+//        log.debug("Activated for post {}", post.id);
+        String title = post.title;
+        String date = dateTimeFormatter.format(post.postDate);
+        String updated = dateTimeFormatter.format(post.modifiedDate);
+        String tags = formatTags(post.tags);
 
         String yamlFrontMatter =
                 """
@@ -46,7 +46,7 @@ public class FrontMatterMdFileProcessor extends AbstractMdFileProcessor {
         return file.withContent(content);
     }
 
-    private String tags(List<String> tags) {
+    private String formatTags(List<String> tags) {
         StringBuilder builder = new StringBuilder();
         tags.forEach(tag -> builder.append("\r\n- ").append(tag));
         return builder.toString();

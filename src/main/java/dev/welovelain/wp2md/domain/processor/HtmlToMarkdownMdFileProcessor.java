@@ -14,7 +14,6 @@ public class HtmlToMarkdownMdFileProcessor extends AbstractMdFileProcessor {
 
     @Override
     protected MdFile processHere(MdFile file, Post post) {
-        log.debug("Activated for post {}", post.getId());
         return file.withContent(copyDown.convert(file.content));
     }
 }
