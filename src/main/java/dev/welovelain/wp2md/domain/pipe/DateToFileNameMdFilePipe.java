@@ -1,4 +1,4 @@
-package dev.welovelain.wp2md.domain.processor;
+package dev.welovelain.wp2md.domain.pipe;
 
 import dev.welovelain.wp2md.domain.MdFile;
 import dev.welovelain.wp2md.domain.Post;
@@ -9,14 +9,13 @@ import java.time.format.DateTimeFormatter;
 
 @RequiredArgsConstructor
 @Slf4j
-public class DateToFileNameMdFileProcessor extends AbstractMdFileProcessor {
+public class DateToFileNameMdFilePipe extends AbstractMdFilePipe {
 
     private final DateTimeFormatter dateTimeFormatter;
     private final String extension;
 
     @Override
     protected MdFile processHere(MdFile file, Post post) {
-//        log.debug("Activated for post {}", post.id);
         String name = dateTimeFormatter.format(post.postDate) + extension;
         return file.withFileName(name);
     }

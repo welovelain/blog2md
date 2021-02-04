@@ -1,4 +1,4 @@
-package dev.welovelain.wp2md.domain.processor;
+package dev.welovelain.wp2md.domain.pipe;
 
 import dev.welovelain.wp2md.domain.MdFile;
 import dev.welovelain.wp2md.domain.Post;
@@ -20,14 +20,13 @@ tags:
 ---
  */
 @Slf4j
-public class FrontMatterMdFileProcessor extends AbstractMdFileProcessor {
+public class FrontMatterMdFilePipe extends AbstractMdFilePipe {
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
     @Override
     protected MdFile processHere(MdFile file, Post post) {
-//        log.debug("Activated for post {}", post.id);
-        String title = post.title;
+        String title = !post.title.isBlank() ? post.title : file.fileName;
         String date = dateTimeFormatter.format(post.postDate);
         String updated = dateTimeFormatter.format(post.modifiedDate);
         String tags = formatTags(post.tags);

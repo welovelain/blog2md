@@ -1,4 +1,4 @@
-package dev.welovelain.wp2md.domain.processor;
+package dev.welovelain.wp2md.domain.pipe;
 
 import dev.welovelain.wp2md.domain.MdFile;
 import dev.welovelain.wp2md.domain.Post;
@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Slf4j
-public class HtmlToMarkdownMdFileProcessor extends AbstractMdFileProcessor {
+public class HtmlToMarkdownMdFilePipe extends AbstractMdFilePipe {
 
     private final CopyDown copyDown;
 

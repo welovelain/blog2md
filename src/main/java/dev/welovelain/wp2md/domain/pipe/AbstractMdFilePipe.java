@@ -1,11 +1,11 @@
-package dev.welovelain.wp2md.domain.processor;
+package dev.welovelain.wp2md.domain.pipe;
 
 import dev.welovelain.wp2md.domain.MdFile;
 import dev.welovelain.wp2md.domain.Post;
 
-public abstract class AbstractMdFileProcessor {
+public abstract class AbstractMdFilePipe {
 
-    public AbstractMdFileProcessor next;
+    public AbstractMdFilePipe next;
 
     public final MdFile process(MdFile file, Post post) {
         MdFile processed = processHere(file, post);

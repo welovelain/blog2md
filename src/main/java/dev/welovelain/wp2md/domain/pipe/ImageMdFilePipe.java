@@ -1,4 +1,4 @@
-package dev.welovelain.wp2md.domain.processor;
+package dev.welovelain.wp2md.domain.pipe;
 
 import dev.welovelain.wp2md.domain.MdFile;
 import dev.welovelain.wp2md.domain.Post;
@@ -19,13 +19,13 @@ import java.util.regex.Pattern;
 /**
  * [![alt_text](image_url)](link_url)
  * ![alt_text](image_url)
- *
+ * <p>
  * First, this processor clears all links to just images.
  * Second, downloads all images in the necessary directory and replaces urls with local files.
  */
 @Slf4j
 @RequiredArgsConstructor
-public class ImageMdFileProcessor extends AbstractMdFileProcessor {
+public class ImageMdFilePipe extends AbstractMdFilePipe {
 
     private static final String IMAGE_REGEX = "!\\[(?<alttext>[^]\\[]*)\\[?[^]\\[]*]?[^]\\[]*]\\((?<url>[^\\s]+?)(?:\\s+([\"'])(?<title>.*?)\\4)?\\)";
     private static final Pattern IMAGE_PATTERN = Pattern.compile(IMAGE_REGEX);

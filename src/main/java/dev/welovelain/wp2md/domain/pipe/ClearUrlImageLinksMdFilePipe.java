@@ -1,4 +1,4 @@
-package dev.welovelain.wp2md.domain.processor;
+package dev.welovelain.wp2md.domain.pipe;
 
 import dev.welovelain.wp2md.domain.MdFile;
 import dev.welovelain.wp2md.domain.Post;
@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
-public class ClearUrlImageLinksMdFileProcessor extends AbstractMdFileProcessor {
+public class ClearUrlImageLinksMdFilePipe extends AbstractMdFilePipe {
 
     private static final String URL_IMAGE_REGEX = "\\[!\\[(?<alttext>[^]\\[]*)\\[?[^]\\[]*]?[^]\\[]*]\\((?<url>[^\\s]+?)(?:\\s+([\"'])(?<title>.*?)\\4)?\\)";
     private static final Pattern URL_IMAGE_PATTERN = Pattern.compile(URL_IMAGE_REGEX);

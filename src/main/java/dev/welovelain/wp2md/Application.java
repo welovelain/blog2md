@@ -2,7 +2,7 @@ package dev.welovelain.wp2md;
 
 import dev.welovelain.wp2md.domain.MainPostProcessor;
 import dev.welovelain.wp2md.domain.PostSupplier;
-import dev.welovelain.wp2md.domain.processor.*;
+import dev.welovelain.wp2md.domain.pipe.*;
 import dev.welovelain.wp2md.infrastructure.DbPostSupplier;
 import io.github.furstenheim.CopyDown;
 import lombok.extern.slf4j.Slf4j;
@@ -32,25 +32,26 @@ public class Application {
         return new DbPostSupplier(connection);
     }
 
-    private static AbstractMdFileProcessor getMdFileProcessorsChain() {
-        // example: 20210203213437.md
-        var p1 = new DateToFileNameMdFileProcessor(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"), ".md");
-        var p2 = new HtmlToMarkdownMdFileProcessor(new CopyDown());
-        var p3 = new FrontMatterMdFileProcessor();
-        var p4 = new ClearUrlImageLinksMdFileProcessor();
-        var p5 = new ImageMdFileProcessor(MD_DIRECTORY, true, IMAGE404_PATH);
+    private static AbstractMdFilePipe getMdFileProcessorsChain() {
+        var p1 = new DateToFileNameMdFilePipe(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"), ".md");
+        var p2 = new HtmlToMarkdownMdFilePipe(new CopyDown());
+        var p3 = new FrontMatterMdFilePipe();
+        var p4 = new ClearUrlImageLinksMdFilePipe();
+        var p5 = new ImageMdFilePipe(MD_DIRECTORY, true, IMAGE404_PATH);
+        var p6 = new DiskWritingMdFilePipe(MD_DIRECTORY);
 
         p1.next = p2;
         p1.next.next = p3;
         p1.next.next.next = p4;
         p1.next.next.next.next = p5;
+        p1.next.next.next.next.next = p6;
 
         return p1;
     }
 
     private static MainPostProcessor mainPostProcessor(
             PostSupplier supplier,
-            AbstractMdFileProcessor mdFileProcessorChain
+            AbstractMdFilePipe mdFileProcessorChain
     ) {
         return new MainPostProcessor(
                 supplier,
