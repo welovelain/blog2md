@@ -16,6 +16,8 @@ import java.time.format.DateTimeFormatter;
 public class Application {
 
     private static final String WORDPRESS_JDBC_URL = System.getenv("WORDPRESS_JDBC_URL");
+    private static final String MD_DIRECTORY = System.getenv("MD_DIRECTORY");
+    private static final String IMAGE404_PATH = System.getenv("IMAGE404_PATH");
 
     public static void main(String[] args) throws Exception {
         MainPostProcessor mainPostProcessor = mainPostProcessor(
@@ -36,7 +38,7 @@ public class Application {
         var p2 = new HtmlToMarkdownMdFileProcessor(new CopyDown());
         var p3 = new FrontMatterMdFileProcessor();
         var p4 = new ClearUrlImageLinksMdFileProcessor();
-        var p5 = new ImageMdFileProcessor();
+        var p5 = new ImageMdFileProcessor(MD_DIRECTORY, true, IMAGE404_PATH);
 
         p1.next = p2;
         p1.next.next = p3;

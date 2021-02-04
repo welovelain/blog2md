@@ -17,17 +17,14 @@ public class MainPostProcessor {
         List<Post> posts = postSupplier.get();
         log.info("Received {} posts", posts.size());
 
-        for (var post: posts) {
-            MdFile mdFile = new MdFile(null, post.htmlContent);
-            MdFile mdFileProcessed = mdFileProcessorChain.process(mdFile, post);
+        posts.parallelStream()
+                .forEach(post -> {
+                    MdFile mdFile = new MdFile(null, post.htmlContent);
+                    MdFile mdFileProcessed = mdFileProcessorChain.process(mdFile, post);
+                });
 
-//            System.out.println(mdFileProcessed);
-//            System.out.println("---");
-        }
 
     }
-
-
 
 
 }
