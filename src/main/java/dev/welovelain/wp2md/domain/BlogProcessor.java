@@ -8,7 +8,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
-public class MainPostProcessor {
+public class BlogProcessor {
 
     private final PostSupplier postSupplier;
     private final AbstractMdFilePipe mdFileProcessorChain;

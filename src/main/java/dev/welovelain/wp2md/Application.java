@@ -1,6 +1,6 @@
 package dev.welovelain.wp2md;
 
-import dev.welovelain.wp2md.domain.MainPostProcessor;
+import dev.welovelain.wp2md.domain.BlogProcessor;
 import dev.welovelain.wp2md.domain.PostSupplier;
 import dev.welovelain.wp2md.domain.pipe.*;
 import dev.welovelain.wp2md.infrastructure.DbPostSupplier;
@@ -20,11 +20,11 @@ public class Application {
     private static final String IMAGE404_PATH = System.getenv("IMAGE404_PATH");
 
     public static void main(String[] args) throws Exception {
-        MainPostProcessor mainPostProcessor = mainPostProcessor(
+        BlogProcessor blogProcessor = mainPostProcessor(
                 dbPostSupplier(),
                 getMdFileProcessorsChain()
         );
-        mainPostProcessor.run();
+        blogProcessor.run();
     }
 
     private static PostSupplier dbPostSupplier() throws SQLException {
@@ -49,11 +49,11 @@ public class Application {
         return p1;
     }
 
-    private static MainPostProcessor mainPostProcessor(
+    private static BlogProcessor mainPostProcessor(
             PostSupplier supplier,
             AbstractMdFilePipe mdFileProcessorChain
     ) {
-        return new MainPostProcessor(
+        return new BlogProcessor(
                 supplier,
                 mdFileProcessorChain
         );
