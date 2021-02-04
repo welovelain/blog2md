@@ -32,16 +32,18 @@ public class Application {
 
     private static AbstractMdFileProcessor getMdFileProcessorsChain() {
         // example: 20210203213437.md
-        var p = new DateToFileNameMdFileProcessor(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"), ".md");
+        var p1 = new DateToFileNameMdFileProcessor(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"), ".md");
         var p2 = new HtmlToMarkdownMdFileProcessor(new CopyDown());
         var p3 = new FrontMatterMdFileProcessor();
-        var p4 = new ImageMdFileProcessor();
+        var p4 = new ClearUrlImageLinksMdFileProcessor();
+        var p5 = new ImageMdFileProcessor();
 
-        p.next = p2;
-        p.next.next = p3;
-        p.next.next.next = p4;
+        p1.next = p2;
+        p1.next.next = p3;
+        p1.next.next.next = p4;
+        p1.next.next.next.next = p5;
 
-        return p;
+        return p1;
     }
 
     private static MainPostProcessor mainPostProcessor(

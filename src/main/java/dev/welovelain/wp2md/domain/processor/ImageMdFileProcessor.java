@@ -23,16 +23,12 @@ public class ImageMdFileProcessor extends AbstractMdFileProcessor {
     private static final String IMAGE_REGEX = "!\\[(?<alttext>[^]\\[]*)\\[?[^]\\[]*]?[^]\\[]*]\\((?<url>[^\\s]+?)(?:\\s+([\"'])(?<title>.*?)\\4)?\\)";
     private static final Pattern IMAGE_PATTERN = Pattern.compile(IMAGE_REGEX);
 
-    private static final String URL_IMAGE_REGEX = "\\[!\\[(?<alttext>[^]\\[]*)\\[?[^]\\[]*]?[^]\\[]*]\\((?<url>[^\\s]+?)(?:\\s+([\"'])(?<title>.*?)\\4)?\\)";
-    private static final Pattern URL_IMAGE_PATTERN = Pattern.compile(URL_IMAGE_REGEX);
-
     private final AtomicInteger imageCounter = new AtomicInteger();
 
     @Override
     protected MdFile processHere(MdFile file, Post post) {
 
         String content = file.content;
-        content = clearUrlLinks(content);
         Matcher m = IMAGE_PATTERN.matcher(content);
 
         StringBuilder sb = new StringBuilder();
@@ -58,16 +54,4 @@ public class ImageMdFileProcessor extends AbstractMdFileProcessor {
         return file.withContent(sb.toString());
     }
 
-    private String clearUrlLinks(String content) {
-        Matcher m = URL_IMAGE_PATTERN.matcher(content);
-
-        StringBuilder builder = new StringBuilder();
-        while (m.find()) {
-            String quoteReplacement = String.format("![%s](%s)", m.group("alttext"), m.group("url"));
-            m.appendReplacement(builder, Matcher.quoteReplacement(quoteReplacement));
-        }
-        m.appendTail(builder);
-
-        return builder.toString();
-    }
 }
