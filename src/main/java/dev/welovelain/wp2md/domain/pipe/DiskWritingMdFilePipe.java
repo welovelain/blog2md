@@ -18,7 +18,7 @@ public class DiskWritingMdFilePipe extends AbstractMdFilePipe {
     @Override
     protected MdFile processHere(MdFile file, Post post) {
         String fileName = blogDirectory + "/" + file.fileName;
-        try (FileWriter fileWriter = new FileWriter(fileName); PrintWriter printWriter = new PrintWriter(fileWriter)) {
+        try (var printWriter = new PrintWriter(new FileWriter(fileName))) {
             printWriter.print(file.content);
             return file;
         } catch (IOException e) {

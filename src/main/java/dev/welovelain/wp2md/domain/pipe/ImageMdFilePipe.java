@@ -75,10 +75,13 @@ public class ImageMdFilePipe extends AbstractMdFilePipe {
         URL urly = new URL(url);
         URL temp = null;
 
+        int redirectCount = 0;
         while (urly != temp) {
-            temp = checkForRedirect(urly);
-            urly = temp;
-            temp = checkForRedirect(urly);
+            if (redirectCount++ > 3) {
+                throw new IOException("Too many redirects");
+            }
+            temp = urly;
+            urly = checkForRedirect(urly);
         }
 
         var conn = urly.openConnection();
@@ -93,7 +96,6 @@ public class ImageMdFilePipe extends AbstractMdFilePipe {
 
     }
 
-    // todo recursive check
     private URL checkForRedirect(URL url) throws IOException {
         HttpURLConnection huc = (HttpURLConnection)url.openConnection();
         huc.setConnectTimeout((int)(downloadTimeout.get(ChronoUnit.SECONDS) * 1000));
