@@ -26,7 +26,8 @@ public class FrontMatterMdFilePipe extends AbstractMdFilePipe {
 
     @Override
     protected MdFile processHere(MdFile file, Post post) {
-        String title = !post.title.isBlank() ? post.title : file.fileName;
+        String title = (!post.title.isBlank() ? post.title : file.fileName)
+                .replaceAll("'", "");
         String date = dateTimeFormatter.format(post.postDate);
         String updated = dateTimeFormatter.format(post.modifiedDate);
         String tags = formatTags(post.tags);
@@ -34,7 +35,7 @@ public class FrontMatterMdFilePipe extends AbstractMdFilePipe {
         String yamlFrontMatter =
                 """
                         ---
-                        title: %s                                        
+                        title: '%s'                                        
                         date: %s
                         updated: %s
                         tags: %s
