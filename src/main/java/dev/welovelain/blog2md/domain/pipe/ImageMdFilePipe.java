@@ -1,7 +1,7 @@
-package dev.welovelain.wp2md.domain.pipe;
+package dev.welovelain.blog2md.domain.pipe;
 
-import dev.welovelain.wp2md.domain.MdFile;
-import dev.welovelain.wp2md.domain.Post;
+import dev.welovelain.blog2md.domain.MdFile;
+import dev.welovelain.blog2md.domain.Post;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,7 +12,6 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

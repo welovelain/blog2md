@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>dev.welovelain</groupId>
-    <artifactId>wp2md</artifactId>
+    <artifactId>blog2md</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

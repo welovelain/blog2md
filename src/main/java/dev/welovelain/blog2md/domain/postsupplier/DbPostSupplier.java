@@ -1,6 +1,6 @@
-package dev.welovelain.wp2md.domain.postsupplier;
+package dev.welovelain.blog2md.domain.postsupplier;
 
-import dev.welovelain.wp2md.domain.Post;
+import dev.welovelain.blog2md.domain.Post;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;

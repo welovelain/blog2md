@@ -1,4 +1,4 @@
-package dev.welovelain.wp2md.domain;
+package dev.welovelain.blog2md.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

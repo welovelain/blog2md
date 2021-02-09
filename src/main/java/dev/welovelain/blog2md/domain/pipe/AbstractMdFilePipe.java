@@ -1,7 +1,7 @@
-package dev.welovelain.wp2md.domain.pipe;
+package dev.welovelain.blog2md.domain.pipe;
 
-import dev.welovelain.wp2md.domain.MdFile;
-import dev.welovelain.wp2md.domain.Post;
+import dev.welovelain.blog2md.domain.MdFile;
+import dev.welovelain.blog2md.domain.Post;
 
 public abstract class AbstractMdFilePipe {
 
