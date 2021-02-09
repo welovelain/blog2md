@@ -14,10 +14,11 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 @RequiredArgsConstructor
 @Slf4j
-public class BloggerXmlSupplier implements PostSupplier {
+public class BloggerXmlSupplier implements Supplier<List<Post>> {
 
     private static final String POST_SCHEME = "http://schemas.google.com/g/2005#kind";
     private static final String POST_TERM = "http://schemas.google.com/blogger/2008/kind#post";

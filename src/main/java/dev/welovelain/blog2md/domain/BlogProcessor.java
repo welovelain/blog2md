@@ -1,17 +1,17 @@
 package dev.welovelain.blog2md.domain;
 
 import dev.welovelain.blog2md.domain.pipe.AbstractMdFilePipe;
-import dev.welovelain.blog2md.domain.postsupplier.PostSupplier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 @RequiredArgsConstructor
 @Slf4j
 public class BlogProcessor {
 
-    private final PostSupplier postSupplier;
+    private final Supplier<List<Post>> postSupplier;
     private final AbstractMdFilePipe mdFileProcessorChain;
 
     public void run() {

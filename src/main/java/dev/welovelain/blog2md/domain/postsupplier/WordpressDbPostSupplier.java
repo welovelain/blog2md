@@ -10,12 +10,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.Supplier;
 
 import static java.util.stream.Collectors.*;
 
 @RequiredArgsConstructor
 @Slf4j
-public class WordpressDbPostSupplier implements PostSupplier {
+public class WordpressDbPostSupplier implements Supplier<List<Post>> {
 
     private static final String SKIP_TAG = "Uncategorized";
 

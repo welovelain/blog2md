@@ -1,18 +1,19 @@
 package dev.welovelain.blog2md;
 
 import dev.welovelain.blog2md.domain.BlogProcessor;
-import dev.welovelain.blog2md.domain.postsupplier.BloggerXmlSupplier;
-import dev.welovelain.blog2md.domain.postsupplier.PostSupplier;
+import dev.welovelain.blog2md.domain.Post;
 import dev.welovelain.blog2md.domain.pipe.*;
+import dev.welovelain.blog2md.domain.postsupplier.BloggerXmlSupplier;
 import dev.welovelain.blog2md.domain.postsupplier.WordpressDbPostSupplier;
 import io.github.furstenheim.CopyDown;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.function.Supplier;
 
 public class Application {
 
@@ -23,24 +24,20 @@ public class Application {
     private static final String BLOGGER_XML_LOCATION = System.getenv("BLOGGER_XML_LOCATION");
 
     public static void main(String[] args) throws Exception {
-        // process wordpress from DB
-//        new BlogProcessor(
-//                wordpressDBPostSupplier(),
-//                getMdFileProcessorsChain()
-//        ).run();
+//        var postSupplier = wordpressDBPostSupplier(); // process wordpress from DB
+        var postSupplier = bloggerXmlPostSupplier(); // process blogger from xml
 
-        // process blogger from xml
         new BlogProcessor(
-                bloggerXmlPostSupplier(),
+                postSupplier,
                 getMdFileProcessorsChain()
         ).run();
     }
 
-    private static PostSupplier bloggerXmlPostSupplier() throws IOException {
+    private static Supplier<List<Post>> bloggerXmlPostSupplier() {
         return new BloggerXmlSupplier(BLOGGER_XML_LOCATION);
     }
 
-    private static PostSupplier wordpressDBPostSupplier() throws SQLException {
+    private static Supplier<List<Post>> wordpressDBPostSupplier() throws SQLException {
         Connection connection = DriverManager.getConnection(WORDPRESS_JDBC_URL);
         return new WordpressDbPostSupplier(connection);
     }
