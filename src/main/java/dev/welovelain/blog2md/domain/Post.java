@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Post {
-    public long id;
+    public String id;
     public String title;
     public LocalDateTime postDate;
     public LocalDateTime modifiedDate;

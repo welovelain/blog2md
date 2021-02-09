@@ -15,7 +15,7 @@ import static java.util.stream.Collectors.*;
 
 @RequiredArgsConstructor
 @Slf4j
-public class DbPostSupplier implements PostSupplier {
+public class WordpressDbPostSupplier implements PostSupplier {
 
     private static final String SKIP_TAG = "Uncategorized";
 
@@ -44,7 +44,7 @@ public class DbPostSupplier implements PostSupplier {
                 String title = rs.getString("post_title");
                 String postContent = rs.getString("post_content");
 
-                Post post = new Post(id, title, postDate, modifiedDate, postContent, new ArrayList<>());
+                Post post = new Post(String.valueOf(id), title, postDate, modifiedDate, postContent, new ArrayList<>());
                 postMap.put(id, post);
             }
 
