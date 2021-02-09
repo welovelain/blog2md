@@ -1,9 +1,9 @@
 package dev.welovelain.wp2md;
 
 import dev.welovelain.wp2md.domain.BlogProcessor;
-import dev.welovelain.wp2md.domain.PostSupplier;
+import dev.welovelain.wp2md.domain.postsupplier.PostSupplier;
 import dev.welovelain.wp2md.domain.pipe.*;
-import dev.welovelain.wp2md.infrastructure.DbPostSupplier;
+import dev.welovelain.wp2md.domain.postsupplier.DbPostSupplier;
 import io.github.furstenheim.CopyDown;
 
 import java.sql.Connection;
